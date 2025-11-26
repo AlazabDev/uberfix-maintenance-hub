@@ -21,7 +21,7 @@ export default function FounderLight() {
         
         {/* صورة المؤسس */}
         <img
-          src="https://al-azab.co/assets/img/founder.png"
+          src="https://al-azab.co/assets/img/512x512.png"
           alt="المؤسس محمد العزب"
           className="w-40 h-40 object-cover rounded-full mx-auto shadow-xl border-4 border-[#f5bf23]"
         />
