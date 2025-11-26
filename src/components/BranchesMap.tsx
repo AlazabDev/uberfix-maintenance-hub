@@ -48,11 +48,49 @@ const BranchesMap = () => {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
       center: [centerLng, centerLat],
-      zoom: 11,
+      zoom: 6,
+      pitch: 45,
+      bearing: 0,
     });
 
     // إضافة عناصر التحكم
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    // حركة تلقائية للخريطة
+    let userInteracting = false;
+    const rotationSpeed = 0.3; // سرعة الدوران
+
+    // دالة للدوران التلقائي
+    function rotateCamera() {
+      if (!map.current || userInteracting) return;
+      
+      const currentBearing = map.current.getBearing();
+      map.current.rotateTo(currentBearing + rotationSpeed, { duration: 1000 });
+    }
+
+    // تفعيل الحركة عند عدم التفاعل
+    const rotationInterval = setInterval(rotateCamera, 1000);
+
+    // إيقاف الحركة عند تفاعل المستخدم
+    map.current.on('mousedown', () => {
+      userInteracting = true;
+    });
+    
+    map.current.on('touchstart', () => {
+      userInteracting = true;
+    });
+
+    map.current.on('mouseup', () => {
+      setTimeout(() => {
+        userInteracting = false;
+      }, 3000); // استئناف الحركة بعد 3 ثواني من توقف التفاعل
+    });
+
+    map.current.on('touchend', () => {
+      setTimeout(() => {
+        userInteracting = false;
+      }, 3000);
+    });
 
     // إضافة علامات الفروع
     branches.forEach((branch, index) => {
@@ -189,6 +227,7 @@ const BranchesMap = () => {
     document.head.appendChild(style);
 
     return () => {
+      clearInterval(rotationInterval);
       map.current?.remove();
       document.head.removeChild(style);
     };
