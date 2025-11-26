@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
 import About from "@/components/About";
+import FounderLight from "@/components/FounderLight";
 import GlobalMap from "@/components/GlobalMap";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
@@ -15,6 +16,7 @@ const Index = () => {
       <Features />
       <Services />
       <About />
+      <FounderLight />
       <GlobalMap />
       <CTA />
       <Footer />
