@@ -13,6 +13,7 @@ const Navigation = () => {
     { path: "/projects", label: "المشروعات" },
     { path: "/branches", label: "الفروع" },
     { path: "/about", label: "عن الشركة" },
+    { path: "/faq", label: "الأسئلة الشائعة" },
     { path: "/contact", label: "اتصل بنا" },
   ];
 
