@@ -142,7 +142,7 @@ const GlobalMap = () => {
   }, [branches]);
 
   return (
-    <section className="relative py-20 bg-background overflow-hidden" style={{ backgroundColor: '#d3d3d2' }}>
+    <section className="relative py-20 bg-background overflow-hidden" style={{ backgroundColor: '#f4f4f4' }}>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#ffffff22] to-transparent pointer-events-none" />
 
       
