@@ -25,6 +25,7 @@ const Navigation = () => {
   const moreLinks = [
     { path: "/faq", label: "الأسئلة الشائعة" },
     { path: "/technicians", label: "انضم كفني" },
+    { path: "/partners", label: "الشركاء والعملاء" },
   ];
 
   const allLinks = [...mainLinks, ...moreLinks];
