@@ -9,7 +9,10 @@ import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import AboutPage from "./pages/AboutPage";
 import Branches from "./pages/Branches";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
+import TechnicianLanding from "./pages/TechnicianLanding";
+import Partners from "./pages/Partners";
 
 const queryClient = new QueryClient();
 
@@ -21,12 +24,15 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/branches" element={<Branches />} />
-        <Route path="*" element={<NotFound />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/branches" element={<Branches />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/technicians" element={<TechnicianLanding />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
