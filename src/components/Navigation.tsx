@@ -26,6 +26,11 @@ const Navigation = () => {
     { path: "/faq", label: "الأسئلة الشائعة" },
     { path: "/technicians", label: "انضم كفني" },
     { path: "/partners", label: "الشركاء والعملاء" },
+    { path: "/help", label: "مركز المساعدة" },
+    { path: "/quality-standards", label: "معايير الجودة" },
+    { path: "/luxury-finishing", label: "Luxury Finishing" },
+    { path: "/brand-identity", label: "Brand Identity" },
+    { path: "/labn-el-asfor", label: "لبن العصفور" },
   ];
 
   const allLinks = [...mainLinks, ...moreLinks];
