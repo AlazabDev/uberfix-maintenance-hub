@@ -13,6 +13,13 @@ import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import TechnicianLanding from "./pages/TechnicianLanding";
 import Partners from "./pages/Partners";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Help from "./pages/Help";
+import QualityStandards from "./pages/QualityStandards";
+import LuxuryFinishing from "./pages/LuxuryFinishing";
+import BrandIdentity from "./pages/BrandIdentity";
+import LabnElAsfor from "./pages/LabnElAsfor";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +39,13 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/technicians" element={<TechnicianLanding />} />
           <Route path="/partners" element={<Partners />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/quality-standards" element={<QualityStandards />} />
+          <Route path="/luxury-finishing" element={<LuxuryFinishing />} />
+          <Route path="/brand-identity" element={<BrandIdentity />} />
+          <Route path="/labn-el-asfor" element={<LabnElAsfor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
