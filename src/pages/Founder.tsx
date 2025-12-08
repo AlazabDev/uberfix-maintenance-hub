@@ -119,7 +119,7 @@ export default function FounderPage() {
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-primary" />
         <div className="absolute inset-0 bg-[url('https://al-azab.co/assets/img/constructions-1.jpg')] bg-cover bg-center opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/50 via-primary/80 to-primary" />
+        <div className="absolute inset-0 bg-primary/70" />
         
         {/* Glowing orbs */}
         <div className="absolute top-20 right-20 w-72 h-72 bg-secondary/30 rounded-full blur-[100px] animate-pulse" />
@@ -200,7 +200,7 @@ export default function FounderPage() {
                 transition={{ delay: index * 0.1 }}
                 className="group relative"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-secondary to-primary rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-300" />
+                <div className="absolute -inset-0.5 bg-secondary/50 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-300" />
                 <Card className="relative bg-card border-0 rounded-2xl p-6 h-full hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-0">
                     <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
@@ -280,7 +280,7 @@ export default function FounderPage() {
                   transition={{ delay: 0.3 }}
                   className="relative my-12"
                 >
-                  <div className="absolute -inset-4 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-2xl blur-xl" />
+                  <div className="absolute -inset-4 bg-secondary/20 rounded-2xl blur-xl" />
                   <blockquote className="relative bg-card border-r-4 border-secondary rounded-xl p-8">
                     <p className="text-xl md:text-2xl font-bold text-foreground italic">
                       "النية مهمة جداً. جميعنا ملتزمون بنقاء النية.
@@ -356,8 +356,8 @@ export default function FounderPage() {
 
           <div className="max-w-5xl mx-auto relative">
             {/* Timeline line with glow */}
-            <div className="absolute right-8 md:right-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-secondary via-primary to-secondary">
-              <div className="absolute inset-0 blur-sm bg-gradient-to-b from-secondary via-primary to-secondary" />
+            <div className="absolute right-8 md:right-1/2 top-0 bottom-0 w-1 bg-secondary">
+              <div className="absolute inset-0 blur-sm bg-secondary" />
             </div>
 
             {timeline.map((item, index) => (
@@ -373,7 +373,7 @@ export default function FounderPage() {
                 <div className="absolute right-4 md:right-1/2 md:-translate-x-1/2 top-4 z-10">
                   <div className="relative">
                     <div className="absolute -inset-2 bg-secondary/50 rounded-full blur-lg animate-pulse" />
-                    <div className="relative w-16 h-16 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center border-4 border-background shadow-xl">
+                    <div className="relative w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-background shadow-xl">
                       <span className="text-primary-foreground font-bold">{item.year}</span>
                     </div>
                   </div>
@@ -381,7 +381,7 @@ export default function FounderPage() {
 
                 {/* Card */}
                 <div className="group relative">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-secondary/50 to-primary/50 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500" />
+                  <div className="absolute -inset-1 bg-secondary/50 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500" />
                   
                   <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500">
                     <CardContent className="p-0">
@@ -392,7 +392,7 @@ export default function FounderPage() {
                             alt={item.title}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute inset-0 bg-black/40" />
                         </div>
                         
                         <div className="flex-1 p-6">
@@ -429,7 +429,7 @@ export default function FounderPage() {
       {/* CTA Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-primary" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary/30" />
+        <div className="absolute inset-0 bg-primary/90" />
         
         {/* Glowing elements */}
         <div className="absolute top-10 left-10 w-40 h-40 bg-secondary/30 rounded-full blur-[80px] animate-pulse" />
