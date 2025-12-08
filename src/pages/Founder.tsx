@@ -354,72 +354,53 @@ export default function FounderPage() {
             </p>
           </motion.div>
 
-          <div className="max-w-5xl mx-auto relative">
-            {/* Timeline line with glow */}
-            <div className="absolute right-8 md:right-1/2 top-0 bottom-0 w-1 bg-secondary">
-              <div className="absolute inset-0 blur-sm bg-secondary" />
-            </div>
-
+          <div className="max-w-4xl mx-auto space-y-8">
             {timeline.map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative mb-12 ${index % 2 === 0 ? 'md:pr-[55%]' : 'md:pl-[55%] md:pr-0'} pr-20`}
               >
-                {/* Year badge */}
-                <div className="absolute right-4 md:right-1/2 md:-translate-x-1/2 top-4 z-10">
-                  <div className="relative">
-                    <div className="absolute -inset-2 bg-secondary/50 rounded-full blur-lg animate-pulse" />
-                    <div className="relative w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-background shadow-xl">
-                      <span className="text-primary-foreground font-bold">{item.year}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card */}
-                <div className="group relative">
-                  <div className="absolute -inset-1 bg-secondary/50 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500" />
-                  
-                  <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500">
-                    <CardContent className="p-0">
-                      <div className="flex flex-col md:flex-row">
-                        <div className="relative w-full md:w-48 h-48 md:h-auto overflow-hidden">
-                          <img
-                            src={item.img}
-                            alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                          <div className="absolute inset-0 bg-black/40" />
-                        </div>
-                        
-                        <div className="flex-1 p-6">
-                          <h3 className="text-xl font-bold text-foreground mb-4 group-hover:text-secondary transition-colors">
-                            {item.title}
-                          </h3>
-                          
-                          <ul className="space-y-3">
-                            {item.points.map((p, i) => (
-                              <motion.li 
-                                key={i}
-                                initial={{ opacity: 0, x: -10 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.1 * i }}
-                                className="flex items-start gap-3 text-muted-foreground"
-                              >
-                                <span className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0" />
-                                <span>{p}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
+                <Card className="overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-card">
+                  <CardContent className="p-0">
+                    <div className="flex flex-col md:flex-row">
+                      {/* Year Badge */}
+                      <div className="bg-secondary flex items-center justify-center p-6 md:w-32">
+                        <span className="text-2xl font-bold text-primary-foreground">{item.year}</span>
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                      
+                      {/* Image */}
+                      <div className="relative w-full md:w-48 h-40 md:h-auto overflow-hidden">
+                        <img
+                          src={item.img}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="flex-1 p-6">
+                        <h3 className="text-xl font-bold text-foreground mb-4">
+                          {item.title}
+                        </h3>
+                        
+                        <ul className="space-y-2">
+                          {item.points.map((p, i) => (
+                            <li 
+                              key={i}
+                              className="flex items-start gap-3 text-muted-foreground text-sm"
+                            >
+                              <span className="w-1.5 h-1.5 bg-secondary rounded-full mt-2 flex-shrink-0" />
+                              <span>{p}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
