@@ -1,15 +1,56 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './hero-effects.css';
 
 const HeroUberFix: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rippleContainerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [stats, setStats] = useState({
-    performance: 0,
-    users: 0,
-    satisfaction: 0
-  });
+  const typingTextRef = useRef<HTMLSpanElement>(null);
+  
+  // أنماط مباشرة للمكون
+  const styles = {
+    hero: {
+      position: 'relative' as const,
+      background: 'radial-gradient(ellipse at center, #1a1a2e 0%, #000000 100%)',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    contentContainer: {
+      position: 'relative' as const,
+      zIndex: 10,
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '0 1.5rem',
+    },
+    gridContainer: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '4rem',
+      alignItems: 'center',
+    },
+    titleContainer: {
+      textAlign: 'right' as const,
+    },
+    featuresContainer: {
+      display: 'flex',
+      flexDirection: 'column' as const,
+      gap: '2rem',
+    },
+    featureItem: {
+      background: 'rgba(255, 255, 255, 0.03)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '1rem',
+      padding: '1.5rem',
+      backdropFilter: 'blur(10px)',
+      transition: 'all 0.3s ease',
+    },
+    featureItemHover: {
+      transform: 'translateX(-10px)',
+      borderColor: '#a855f7',
+    }
+  };
 
   // Particle System
   useEffect(() => {
@@ -34,39 +75,32 @@ const HeroUberFix: React.FC = () => {
       size: number;
       speedX: number;
       speedY: number;
-      baseX: number;
-      baseY: number;
-      density: number;
       color: string;
     }> = [];
 
     const colors = [
       'rgba(168, 85, 247, 0.6)',
       'rgba(59, 130, 246, 0.6)',
-      'rgba(236, 72, 153, 0.6)',
-      'rgba(139, 92, 246, 0.6)',
+      'rgba(16, 185, 129, 0.6)',
     ];
 
     // Create particles
     const createParticles = () => {
       particles.length = 0;
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < 80; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           size: Math.random() * 2 + 1,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: (Math.random() - 0.5) * 0.5,
-          baseX: Math.random() * canvas.width,
-          baseY: Math.random() * canvas.height,
-          density: Math.random() * 30 + 1,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
     };
 
     // Mouse interaction
-    const mouse = { x: null as number | null, y: null as number | null, radius: 150 };
+    const mouse = { x: null as number | null, y: null as number | null, radius: 100 };
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.x;
@@ -78,27 +112,6 @@ const HeroUberFix: React.FC = () => {
       mouse.y = null;
     };
 
-    // Ripple effect
-    const handleCanvasClick = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      if (rippleContainerRef.current) {
-        const ripple = document.createElement('div');
-        ripple.className = 'ripple';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.style.width = '100px';
-        ripple.style.height = '100px';
-        rippleContainerRef.current.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 1500);
-      }
-    };
-
     // Connect particles with lines
     const connectParticles = () => {
       for (let i = 0; i < particles.length; i++) {
@@ -107,10 +120,10 @@ const HeroUberFix: React.FC = () => {
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 120) {
-            const opacity = 1 - distance / 120;
+          if (distance < 100) {
+            const opacity = 1 - distance / 100;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.15})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.1})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -140,7 +153,7 @@ const HeroUberFix: React.FC = () => {
         ctx.fill();
 
         // Inner core
-        ctx.fillStyle = particle.color.replace('0.6', '1');
+        ctx.fillStyle = particle.color.replace('0.6', '0.8');
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
@@ -161,31 +174,27 @@ const HeroUberFix: React.FC = () => {
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
             
-            particle.x += forceDirectionX * force * particle.density;
-            particle.y += forceDirectionY * force * particle.density;
+            particle.x += forceDirectionX * force * 10;
+            particle.y += forceDirectionY * force * 10;
           }
         }
 
-        // Return to base position
-        const dx = particle.baseX - particle.x;
-        const dy = particle.baseY - particle.y;
-        particle.x += dx * 0.05 + particle.speedX;
-        particle.y += dy * 0.05 + particle.speedY;
+        // Move particles
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
 
-        // Boundary check
-        if (particle.x < 0 || particle.x > canvas.width) {
-          particle.baseX = Math.random() * canvas.width;
+        // Boundary check and bounce
+        if (particle.x <= 0 || particle.x >= canvas.width) {
+          particle.speedX = -particle.speedX;
         }
-        if (particle.y < 0 || particle.y > canvas.height) {
-          particle.baseY = Math.random() * canvas.height;
+        if (particle.y <= 0 || particle.y >= canvas.height) {
+          particle.speedY = -particle.speedY;
         }
       });
     };
 
     // Animation loop
     const animate = () => {
-      if (!isVisible) return;
-      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       updateParticles();
       connectParticles();
@@ -201,79 +210,44 @@ const HeroUberFix: React.FC = () => {
     window.addEventListener('resize', resizeCanvas);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', handleMouseLeave);
-    canvas.addEventListener('click', handleCanvasClick);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
-      canvas.removeEventListener('click', handleCanvasClick);
     };
-  }, [isVisible]);
-
-  // Animate stats counter
-  useEffect(() => {
-    const animateCounter = (targetValue: number, setter: (value: number) => void) => {
-      let startValue = 0;
-      const duration = 2000;
-      const startTime = performance.now();
-
-      const step = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        const currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
-        
-        setter(currentValue);
-        
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          setter(targetValue);
-        }
-      };
-
-      requestAnimationFrame(step);
-    };
-
-    const timer = setTimeout(() => {
-      animateCounter(99, (value) => setStats(prev => ({ ...prev, performance: value })));
-      animateCounter(50, (value) => setStats(prev => ({ ...prev, users: value })));
-      animateCounter(100, (value) => setStats(prev => ({ ...prev, satisfaction: value })));
-    }, 1000);
-
-    return () => clearTimeout(timer);
   }, []);
 
-  // Parallax effect on scroll
+  // Typing Effect for subtitle
   useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.pageYOffset;
-      const canvas = canvasRef.current;
-      const orbs = [
-        document.getElementById('orb1'),
-        document.getElementById('orb2'),
-        document.getElementById('orb3'),
-      ];
+    const text = "استمتع بتجربة فريدة في إدارة عقارك التجاري أو السكني، نقدم حلولاً عملية للحفاظ على عقارك في أفضل حالة.";
+    let index = 0;
+    const speed = 50;
+    const cursor = document.getElementById('cursor');
 
-      if (canvas) {
-        canvas.style.transform = `translateY(${scrolled * 0.3}px)`;
+    const typeWriter = () => {
+      if (index < text.length && typingTextRef.current) {
+        typingTextRef.current.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeWriter, speed);
+      } else if (cursor) {
+        // جعل المؤشر يومض بعد اكتمال الكتابة
+        setInterval(() => {
+          if (cursor.style.opacity === '0') {
+            cursor.style.opacity = '1';
+          } else {
+            cursor.style.opacity = '0';
+          }
+        }, 500);
       }
-
-      orbs.forEach((orb, index) => {
-        if (orb) {
-          const speed = 0.4 + index * 0.1;
-          orb.style.transform = `translateY(${scrolled * speed}px)`;
-        }
-      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Start typing after 1 second
+    setTimeout(typeWriter, 1000);
   }, []);
 
-  // Mouse move parallax for orbs
+  // Parallax effect for orbs
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const mouseX = e.clientX / window.innerWidth;
@@ -286,11 +260,10 @@ const HeroUberFix: React.FC = () => {
 
       orbs.forEach((orb, index) => {
         if (orb) {
-          const speed = 20 + index * 10;
+          const speed = 30 + index * 15;
           const x = (mouseX - 0.5) * speed;
           const y = (mouseY - 0.5) * speed;
-          const scrollOffset = window.pageYOffset * (0.4 + index * 0.1);
-          orb.style.transform = `translateY(${scrollOffset}px) translate(${x}px, ${y}px)`;
+          orb.style.transform = `translate(${x}px, ${y}px)`;
         }
       });
     };
@@ -300,10 +273,9 @@ const HeroUberFix: React.FC = () => {
   }, []);
 
   // Smooth scroll for anchor links
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    const targetId = e.currentTarget.getAttribute('href')?.substring(1);
-    const targetElement = document.getElementById(targetId || '');
+    const targetElement = document.getElementById(targetId);
     
     if (targetElement) {
       targetElement.scrollIntoView({
@@ -314,107 +286,142 @@ const HeroUberFix: React.FC = () => {
   };
 
   return (
-    <section className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="hero-section" style={styles.hero}>
       {/* Particles Canvas */}
       <canvas
         ref={canvasRef}
         className="particles-canvas absolute top-0 left-0 w-full h-full z-1"
       />
 
-      {/* Parallax Orbs */}
+      {/* Animated Orbs */}
       <div className="parallax-layer-2 absolute inset-0 pointer-events-none">
         <div id="orb1" className="orb orb-1"></div>
         <div id="orb2" className="orb orb-2"></div>
         <div id="orb3" className="orb orb-3"></div>
       </div>
 
-      {/* Main Content */}
-      <div className="parallax-layer-3 relative z-10 max-w-6xl mx-auto px-6 text-center">
-        {/* Animated Badge */}
-        <div className="hero-badge">
-          <div className="badge-glow"></div>
-          <span className="badge-text">🚀 الجيل القادم من إدارة الصيانة</span>
-        </div>
-
-        {/* Main Title */}
-        <h1 className="hero-title">
-          <span className="title-line-1 block mb-2">
-            <span className="gradient-text text-5xl md:text-7xl lg:text-8xl font-black">
-              UberFix
-            </span>
-          </span>
-          <span className="title-line-2 block">
-            <span className="text-3xl md:text-5xl lg:text-6xl font-bold">
-              إدارة الصيانة الذكية
-            </span>
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="hero-subtitle">
-          استمتع بتجربة فريدة في إدارة عقارك التجاري أو السكني. نقدم حلولاً عملية للحفاظ على عقارك في أفضل حالة.
-        </p>
-
-        {/* Features */}
-        <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8 my-12">
-          <div className="feature-card p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all duration-300">
-            <div className="feature-icon text-4xl mb-4">🏢</div>
-            <h3 className="text-xl font-bold mb-2">إدارة صيانة الفروع</h3>
-            <p className="text-white/70">إدارة مركزية لجميع عمليات الصيانة في فروعك</p>
-          </div>
+      {/* Main Content Container */}
+      <div style={styles.contentContainer}>
+        <div style={styles.gridContainer}>
           
-          <div className="feature-card p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-blue-500/50 transition-all duration-300">
-            <div className="feature-icon text-4xl mb-4">👨‍🔧</div>
-            <h3 className="text-xl font-bold mb-2">إدارة الفنيين</h3>
-            <p className="text-white/70">تنظيم وتوزيع المهام على الفنيين بكفاءة</p>
-          </div>
-          
-          <div className="feature-card p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-pink-500/50 transition-all duration-300">
-            <div className="feature-icon text-4xl mb-4">📋</div>
-            <h3 className="text-xl font-bold mb-2">إدارة طلبات الصيانة</h3>
-            <p className="text-white/70">تتبع ومعالجة طلبات الصيانة بسهولة</p>
-          </div>
-        </div>
+          {/* Left Side: Title and Subtitle */}
+          <div style={styles.titleContainer}>
+            {/* Badge */}
+            <div className="hero-badge mb-8">
+              <div className="badge-glow"></div>
+              <span className="badge-text">الجيل القادم من إدارة الصيانة</span>
+            </div>
 
-        {/* CTA Buttons */}
-        <div className="hero-buttons">
-          <button className="animated-border-button" id="primaryBtn">
-            <span className="button-border"></span>
-            <span className="button-content">
-              <span className="button-text">ابدأ رحلتك الآن</span>
-              <svg className="button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </span>
-            <span className="button-glow"></span>
-          </button>
+            {/* Main Title */}
+            <h1 className="hero-title mb-6">
+              <span className="gradient-text text-6xl md:text-7xl lg:text-8xl font-black block">
+                UberFix
+              </span>
+              <span className="text-3xl md:text-4xl font-bold text-white/90 block mt-4">
+                إدارة الصيانة الذكية
+              </span>
+            </h1>
 
-          <button className="secondary-button">
-            <span className="relative z-10 flex items-center gap-2">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              شاهد العرض التوضيحي
-            </span>
-          </button>
-        </div>
+            {/* Animated Subtitle */}
+            <div className="hero-subtitle-container mb-10">
+              <p className="text-xl md:text-2xl text-white/80 leading-relaxed">
+                <span ref={typingTextRef}></span>
+                <span id="cursor" className="cursor-animate">|</span>
+              </p>
+            </div>
 
-        {/* Stats Section */}
-        <div className="hero-stats">
-          <div className="stat-item">
-            <div className="stat-value">{stats.performance}%</div>
-            <div className="stat-label">كفاءة الأداء</div>
+            {/* CTA Buttons */}
+            <div className="hero-buttons flex gap-4">
+              <button className="animated-border-button">
+                <span className="button-border"></span>
+                <span className="button-content">
+                  <span className="button-text">ابدأ الآن</span>
+                  <svg className="button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
+                <span className="button-glow"></span>
+              </button>
+
+              <button className="secondary-button">
+                <span className="relative z-10 flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  شاهد العرض التوضيحي
+                </span>
+              </button>
+            </div>
           </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">{stats.users}K+</div>
-            <div className="stat-label">مستخدم</div>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">{stats.satisfaction}%</div>
-            <div className="stat-label">رضا العملاء</div>
+
+          {/* Right Side: Features */}
+          <div style={styles.featuresContainer}>
+            {/* Feature 1: إدارة صيانة الفروع */}
+            <div 
+              className="feature-card" 
+              style={styles.featureItem}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateX(-10px)';
+                e.currentTarget.style.borderColor = '#a855f7';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateX(0)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              <div className="feature-header flex items-center gap-4 mb-4">
+                <div className="feature-icon text-3xl">🏢</div>
+                <h3 className="text-2xl font-bold text-white">إدارة صيانة الفروع</h3>
+              </div>
+              <p className="text-white/70 text-lg">
+                إدارة مركزية لجميع عمليات الصيانة في فروعك
+              </p>
+            </div>
+
+            {/* Feature 2: إدارة الفنيين */}
+            <div 
+              className="feature-card" 
+              style={styles.featureItem}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateX(-10px)';
+                e.currentTarget.style.borderColor = '#3b82f6';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateX(0)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              <div className="feature-header flex items-center gap-4 mb-4">
+                <div className="feature-icon text-3xl">👨‍🔧</div>
+                <h3 className="text-2xl font-bold text-white">إدارة الفنيين</h3>
+              </div>
+              <p className="text-white/70 text-lg">
+                تنظيم وتوزيع المهام على الفنيين بكفاءة
+              </p>
+            </div>
+
+            {/* Feature 3: إدارة طلبات الصيانة */}
+            <div 
+              className="feature-card" 
+              style={styles.featureItem}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateX(-10px)';
+                e.currentTarget.style.borderColor = '#10b981';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateX(0)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              <div className="feature-header flex items-center gap-4 mb-4">
+                <div className="feature-icon text-3xl">📋</div>
+                <h3 className="text-2xl font-bold text-white">إدارة طلبات الصيانة</h3>
+              </div>
+              <p className="text-white/70 text-lg">
+                تتبع ومعالجة طلبات الصيانة بسهولة
+              </p>
+            </div>
           </div>
         </div>
       </div>
